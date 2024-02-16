@@ -65,6 +65,10 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
         setcookie( "usuario_sesion", $usuario_sesion_cookie, time() + 3600 * 24 * 30, '/' );
       }
     }
+  } else if ( $herramienta == 'cerrar-sesion' ) {
+    setcookie( 'usuario_email', '', time() - 3600, '/' );
+    setcookie( 'usuario_nivel_sesion', '', time() - 3600, '/' );
+    setcookie( 'usuario_sesion', '', time() - 3600, '/' );
   }
 }
 ?>
@@ -75,8 +79,10 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Rally Museos Puebla</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
-<script src="js/html5-qrcode.min.js"></script>
+<script src="js/html5-qrcode.min.js"></script> 
+<script src="js/jquery-confirm.min.js"></script>
 <link href="css/css.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="css/jquery-confirm.min.css">
 </head>
 
 <body>
@@ -93,6 +99,55 @@ if ( isset( $herramienta_actual ) ) {
 </body>
 </html>
 <script>
+//Cerrar sesión
+$('#id-a-cerrar-sesion').click(function () {
+  $.confirm({
+    theme: 'light',
+    boxWidth: '30%',
+    useBootstrap: false,
+    columnClass: 'small',
+    closeIcon: true,
+    draggable: false,
+    escapeKey: true,
+    dragWindowBorder: true,
+    title: 'Cerrar sesión',
+    content: '¿Seguro de continuar?',
+    buttons: {
+      confirm: {
+        text: 'Sí, continuar',
+        btnClass: 'btn-blue',
+        action: function () {
+          var he_ac = 'cerrar-sesion';
+          var rally_herramienta = btoa(he_ac);
+          $.ajax({
+            type: 'post',
+            data: 'rally_herramienta=' + rally_herramienta,
+            beforeSend: function () {
+              //Acción antes de continuar
+            },
+            success: function () {
+              //Acción en caso de éxito
+              location.replace("<?php echo $servidor_dominio; ?>");
+            },
+            error: function () {
+              //Acción en caso de error
+              var aviso_pin = 'Hubo un error, intenta nuevamente';
+              $('#id-div-alertas').show();
+              $('#id-div-alertas').html(aviso_pin);
+            }
+          });
+        }
+      },
+      cancel: {
+        text: 'Cancelar',
+        action: function () {
+          //Cancelar
+        }
+      },
+    }
+  });
+});
+    
 //Registro usuario
 $("#id-form-registro").on("submit", function () {
   event.preventDefault();

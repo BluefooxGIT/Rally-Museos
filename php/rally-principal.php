@@ -29,7 +29,7 @@
     <input class="input-registro-submit hvr-skew-forward" type="submit" value="REGISTRAR">
   </form>
 </div>
-<div id="id-div-logueo" class="div-contenedor-inicio div-oculto"><span class="span-descripcion">¡HOLA! BIENVENIDO</span>
+<div id="id-div-logueo" class="div-contenedor-logueo div-oculto"><span class="span-descripcion">¡HOLA! BIENVENIDO</span>
   <form id="id-form-logueo" method="post" enctype="multipart/form-data">
     <input id="id-usuarios-email-logueo" name="usuarios_email" class="input-registro" type="email" placeholder="EMAIL">
     <input id="id-usuarios-contrasena-logueo" name="usuarios_contrasena" class="input-registro" type="password" placeholder="CONTRASE&Ntilde;A">

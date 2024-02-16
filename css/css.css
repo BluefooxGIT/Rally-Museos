@@ -7,7 +7,7 @@ body {
   margin: 0px;
   padding: 0px;
   font-family: "Lato", sans-serif;
-/*  background: linear-gradient(45deg, #ffffff, #f2f2f2, #d9d9d9);
+  /*  background: linear-gradient(45deg, #ffffff, #f2f2f2, #d9d9d9);
   background-size: 400% 400%;
   animation: gradient-anim 15s ease infinite;
   height: 100%;*/
@@ -52,13 +52,26 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 #reader__scan_region video {
   border-radius: 27px;
-    width: 100%;
+  width: 100%;
 }
 #reader__scan_region img {
   display: none !important;
 }
 #reader__scan_region br {
   display: none !important;
+}
+.a-cerrar-sesion {
+  text-decoration: none;
+  cursor: pointer;
+}
+.div-cerrar-sesion {
+  text-align: right;
+  padding: 12px;
+}
+.svg-cerrar-sesion {
+  width: 24px;
+  height: auto;
+  fill: #000000;
 }
 .html5-qrcode-element {
   font-size: 1.3em;
@@ -78,6 +91,10 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 .div-modulo-qr {
   border: none !important;
+}
+.div-modulo-qr select {
+  text-transform: uppercase !important;
+  text-align: center !important;
 }
 #html5-qrcode-anchor-scan-type-change {
   display: none !important;
@@ -334,6 +351,14 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   color: #5D666A;
 }
 .div-contenedor-inicio {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.div-contenedor-logueo {
+  width: 480px;
   text-align: center;
   position: absolute;
   left: 50%;
