@@ -90,7 +90,6 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
 if ( isset( $herramienta_actual ) ) {
   if ( $herramienta_actual == 'rally-usuario-principal' ) {
     include( 'php/rally-usuario-principal.php' );
-
   }
 } else {
   include( 'php/rally-principal.php' );
@@ -249,5 +248,11 @@ $('#id-a-registro').click(function () {
 $('#id-a-iniciar').click(function () {
   $('#id-div-inicio').fadeOut(300);
   $('#id-div-logueo').fadeIn(300);
+})
+    
+$('.input-registro-volver').click(function () {
+  $('#id-div-inicio').fadeIn(300);
+  $('#id-div-logueo').fadeOut(300);
+  $('#id-div-registro').fadeOut(300);
 })
 </script>
