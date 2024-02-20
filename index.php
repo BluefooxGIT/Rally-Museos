@@ -90,6 +90,8 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
 if ( isset( $herramienta_actual ) ) {
   if ( $herramienta_actual == 'rally-usuario-principal' ) {
     include( 'php/rally-usuario-principal.php' );
+  } else if ( $herramienta_actual == 'rally-iniciar-usuario' ) {
+    include( 'php/rally-usuario-principal.php' );
   }
 } else {
   include( 'php/rally-principal.php' );

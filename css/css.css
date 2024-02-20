@@ -19,12 +19,12 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 * {
-  -webkit-touch-callout: none;
+  /*  -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
+  user-select: none;*/
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box
@@ -86,7 +86,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   display: inline-table;
   outline: none;
   border: none;
-  width: 100%;
   text-align: center;
 }
 .div-modulo-qr {
@@ -264,7 +263,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   display: inline-table;
   outline: none;
   border: none;
-  width: 100%;
 }
 .input-registro-submit:hover {
   background-color: #1f7a7a;
@@ -352,7 +350,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   color: #5D666A;
 }
 .span-descripcion-hora {
-  font-size: 3.21em;
+  font-size: 1.90em;
   font-weight: 900;
   display: block;
   line-height: 1.10em;
@@ -364,6 +362,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   display: block;
   line-height: 1.10em;
   color: #5D666A;
+  text-transform: uppercase;
 }
 .div-contenedor-inicio {
   text-align: center;
@@ -392,6 +391,28 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   display: none;
 }
 @media screen and (max-width: 500px) {
+  .jconfirm-box {
+    width: 90% !important;
+  }
+  .span-descripcion-hora {
+    font-size: 1.30em;
+  }
+  .img-gif-animado {
+    display: block;
+    margin: 0px auto;
+  }
+  .div-checkbox {
+    margin: 0px 0px 0px 12px;
+  }
+  .div-checkbox-text {
+    width: 100%;
+  }
+  .div-contenedor-registro {
+    width: 90%;
+  }
+  .div-contenedor-logueo {
+    width: 90%;
+  }
   .div-modulo-qr {
     width: 100% !important;
   }
@@ -399,8 +420,10 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     width: 90% !important;
   }
   .a-boton-inicia {
-    font-size: 2.30em;
-    width: 70%;
+    width: 90%;
+  }
+  .a-boton-inicia:last-child {
+    margin: 3px 6px;
   }
   .span-titulo {
     font-size: 7.00em;
