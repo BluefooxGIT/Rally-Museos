@@ -22,26 +22,6 @@ $usuarios_checkpoint_siguiente = $row_checkpoints_usuario[ 'usuarios_checkpoint_
 $sql_checkpoint = $mysqli->query( "SELECT * FROM rally_checkpoint WHERE checkpoint_folio = '$usuarios_checkpoint_siguiente' " );
 $row_checkpoint = mysqli_fetch_array( $sql_checkpoint );
 //Iniciar Rally
-if ( isset( $_POST[ 'rally_subherramienta' ] ) ) {
-  $rally_subherramienta = $_POST[ 'rally_subherramienta' ];
-  if ( $rally_subherramienta == 'iniciar' ) {
-    //Registro Inicial
-    do {
-      $usuarios_checkpoint_usuario = $usuario_folio;
-      $usuarios_checkpoint_checkpoint = $row_checkpoints[ 'checkpoint_folio' ];
-      $usuarios_checkpoint_fecha = date( "Y-m-d" );
-      $usuarios_checkpoint_hora = date( "H:i:s" );
-      $usuarios_checkpoint_registrado = '0';
-      //Filtro Duplicados
-      $sql_checkpoints_filtro = $mysqli->query( "SELECT * FROM rally_usuarios_checkpoint WHERE usuarios_checkpoint_usuario = '$usuario_folio' AND usuarios_checkpoint_checkpoint = '$usuarios_checkpoint_checkpoint' " );
-      $row_checkpoints_filtro = mysqli_fetch_array( $sql_checkpoints_filtro );
-      if ( !isset( $row_checkpoints_filtro ) ) {
-        //Registrar Checkpoints
-        mysqli_query( $mysqli, "INSERT INTO rally_usuarios_checkpoint (usuarios_checkpoint_usuario, usuarios_checkpoint_checkpoint, usuarios_checkpoint_fecha, usuarios_checkpoint_hora, usuarios_checkpoint_registrado) VALUES ('$usuarios_checkpoint_usuario', '$usuarios_checkpoint_checkpoint', '$usuarios_checkpoint_fecha', '$usuarios_checkpoint_hora', '$usuarios_checkpoint_registrado')" );
-      }
-    } while ( $row_checkpoints = mysqli_fetch_assoc( $sql_checkpoints ) );
-  }
-}
 if ( $checkpoints_usuario_total > '0' ) {
   $sql_checkpoints_inicio = $mysqli->query( "SELECT * FROM rally_usuarios_checkpoint WHERE usuarios_checkpoint_usuario = '$usuario_folio' AND usuarios_checkpoint_registrado = '0'" );
   $row_checkpoints_inicio = mysqli_fetch_array( $sql_checkpoints_inicio );
@@ -67,50 +47,40 @@ if ( $checkpoints_usuario_total > '0' ) {
   }
 }
 ?>
+<!--Botón cerrar sesión-->
 <div class="div-cerrar-sesion"> <a id="id-a-cerrar-sesion" class="a-cerrar-sesion">
   <svg class="svg-cerrar-sesion" viewBox="0 0 512 512">
     <path d="M170.698,448H72.757c-4.814-0.012-8.714-3.911-8.725-8.725V72.725c0.012-4.814,3.911-8.714,8.725-8.725h97.941   c17.673,0,32-14.327,32-32s-14.327-32-32-32H72.757C32.611,0.047,0.079,32.58,0.032,72.725v366.549   C0.079,479.42,32.611,511.953,72.757,512h97.941c17.673,0,32-14.327,32-32S188.371,448,170.698,448z"/>
     <path d="M483.914,188.117l-82.816-82.752c-12.501-12.495-32.764-12.49-45.259,0.011s-12.49,32.764,0.011,45.259l72.789,72.768   L138.698,224c-17.673,0-32,14.327-32,32s14.327,32,32,32l0,0l291.115-0.533l-73.963,73.963   c-12.042,12.936-11.317,33.184,1.618,45.226c12.295,11.445,31.346,11.436,43.63-0.021l82.752-82.752   c37.491-37.49,37.491-98.274,0.001-135.764c0,0-0.001-0.001-0.001-0.001L483.914,188.117z"/>
   </svg>
   </a> </div>
-<div id="id-div-iniciar" class="<?php if($checkpoints_usuario_total == '0') { echo 'div-contenedor-inicio'; } else { echo 'div-oculto'; }?>">
-  <form id="id-form-iniciar" method="post" enctype="multipart/form-data" class="<?php if($checkpoints_usuario_total > '0') { echo 'div-oculto'; } ?>">
-    <img draggable="false" class="img-gif-animado" src="gif/mapa.gif">
-    <input name="rally_subherramienta" type="hidden" value="iniciar">
-    <input id="id-input-iniciar" class="input-registro-submit hvr-skew-forward" type="submit" value="INICIAR">
-  </form>
+<div id="id-div-checkpoint-leido" class="<?php if(isset($_GET['ch'])) { $checkpoint_leido = base64_decode($_GET['ch']); if($checkpoint_leido == '1') { echo 'div-contenedor-inicio-full'; } else { echo 'div-oculto'; } } else { echo 'div-oculto'; } ?>">
+  <div class="div-contenido-full"><img draggable="false" class="img-gif-animado" src="gif/verificado.gif"><span id="id-span-texto" class="span-descripcion-punto">Ya tienes<br>
+    <span class="span-descripcion-hora">
+    <?php if(isset($_GET['l'])) { $checkpoint_lugar = base64_decode($_GET['l']); echo $checkpoint_lugar; } ?>
+    </span></span>
+    <input id="id-input-siguiente" class="input-siguiente" type="button" value="siguiente">
+  </div>
 </div>
-<div id="id-div-rally" class="<?php if($checkpoints_usuario_total == '0') { echo 'div-oculto'; } else { echo 'div-contenedor-inicio'; }?>"> <img id="id-img-camino" draggable="false" class="img-gif-animado" src="gif/camino.gif"><span class="span-descripcion-punto">B&uacute;scalo y encu&eacute;ntralo en<br>
+<div id="id-div-rally" class="div-contenedor-inicio"> <img id="id-img-camino" draggable="false" class="img-gif-animado" src="gif/camino.gif"><img id="id-img-codigoqr" draggable="false" class="div-oculto img-gif-animado" src="gif/codigo-qr.gif"><span id="id-span-texto" class="span-descripcion-punto">Checkpoint<br>
+  Encu&eacute;ntralo en<br>
   <span class="span-descripcion-hora">
-  <?php if(isset($row_checkpoint)) { echo  $row_checkpoint[ 'checkpoint_nombre' ]; } ?>
+  <?php if(isset($row_checkpoint)) { echo $row_checkpoint[ 'checkpoint_nombre' ]; } ?>
   </span> </span>
-  <form id="id-form-qr" method="post" enctype="multipart/form-data" class="<?php if($checkpoints_usuario_total == '0') { echo 'div-oculto'; } ?>">
+  <form id="id-form-qr" method="post" enctype="multipart/form-data" class="">
     <input id="id-input-qr" name="usuarios_checkpoint_checkpoint" type="hidden">
     <div style="width: 100%" id="reader" class="div-modulo-qr"></div>
   </form>
 </div>
-<div id="id-div-rally-finalizado" class="<?php if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-contenedor-inicio'; } else { echo 'div-oculto'; }?>"><img draggable="false" class="img-gif-animado" src="gif/premio.gif"><span class="span-descripcion-hora">Felicidades</span> </div>
+<div id="id-div-rally-finalizado" class="<?php if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-contenedor-inicio-full'; } else { echo 'div-oculto'; }?>">
+  <div class="div-contenido-full"><img draggable="false" class="img-gif-animado" src="gif/premio.gif"><span class="span-descripcion-punto">Felicidades</span> </div>
+</div>
 <script>
-//Iniciar Rally
-$("#id-form-iniciar").on("submit", function () {
-    var herramienta_actual = 'rally-iniciar-usuario';
-    $.ajax({
-      type: 'post',
-      data: 'herramienta_actual=' + herramienta_actual,
-      beforeSend: function () {
-        //Acción antes de continuar
-      },
-      success: function (response) {
-        //Acción en caso de éxito
-        location.replace("<?php echo $servidor_dominio; ?>");
-      },
-      error: function () {
-        //Acción en caso de error
-        location.replace("../?e=<?php echo base64_encode('usuario-registro-problema'); ?>");
-      }
-    });
+//Botón Siguiente Checkpoint
+$('#id-input-siguiente').click(function() {
+    location.replace("<?php echo $servidor_dominio; ?>");
 });
-    
+
 //Lector QR
 function onScanSuccess(decodedText, decodedResult) {
   $('#id-input-qr').val(decodedText);
@@ -124,12 +94,11 @@ function onScanSuccess(decodedText, decodedResult) {
     },
     success: function (response) {
       //Acción en caso de éxito
-      location.replace("<?php echo $servidor_dominio; ?>");
+      location.replace("<?php echo $servidor_dominio.'?ch='.base64_encode('1').'&l='.base64_encode($row_checkpoint[ 'checkpoint_nombre' ]); ?>");
     },
     error: function () {
       //Acción en caso de error
-      //location.replace("../?e=<?php //echo base64_encode('usuario-registro-qr'); ?>");
-      location.replace("<?php echo $servidor_dominio; ?>");
+      location.replace("<?php echo $servidor_dominio.'?ch='.base64_encode('1').'&l='.base64_encode($row_checkpoint[ 'checkpoint_nombre' ]); ?>");
     }
   });
 }

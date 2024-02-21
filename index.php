@@ -33,6 +33,22 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
       $sql_usuario_registrado = $mysqli->query( "SELECT * FROM rally_usuarios WHERE usuarios_email = '$usuarios_email'" );
       $row_usuario_registrado = mysqli_fetch_array( $sql_usuario_registrado );
       if ( isset( $row_usuario_registrado ) ) {
+        $sql_checkpoints = $mysqli->query( "SELECT * FROM rally_checkpoint ORDER BY RAND()" );
+        $row_checkpoints = mysqli_fetch_array( $sql_checkpoints );
+        do {
+          $usuarios_checkpoint_usuario = $usuarios_folio;
+          $usuarios_checkpoint_checkpoint = $row_checkpoints[ 'checkpoint_folio' ];
+          $usuarios_checkpoint_fecha = date( "Y-m-d" );
+          $usuarios_checkpoint_hora = date( "H:i:s" );
+          $usuarios_checkpoint_registrado = '0';
+          //Filtro Duplicados
+          $sql_checkpoints_filtro = $mysqli->query( "SELECT * FROM rally_usuarios_checkpoint WHERE usuarios_checkpoint_usuario = '$usuarios_folio' AND usuarios_checkpoint_checkpoint = '$usuarios_checkpoint_checkpoint' " );
+          $row_checkpoints_filtro = mysqli_fetch_array( $sql_checkpoints_filtro );
+          if ( !isset( $row_checkpoints_filtro ) ) {
+            //Registrar Checkpoints
+            mysqli_query( $mysqli, "INSERT INTO rally_usuarios_checkpoint (usuarios_checkpoint_usuario, usuarios_checkpoint_checkpoint, usuarios_checkpoint_fecha, usuarios_checkpoint_hora, usuarios_checkpoint_registrado) VALUES ('$usuarios_checkpoint_usuario', '$usuarios_checkpoint_checkpoint', '$usuarios_checkpoint_fecha', '$usuarios_checkpoint_hora', '$usuarios_checkpoint_registrado')" );
+          }
+        } while ( $row_checkpoints = mysqli_fetch_assoc( $sql_checkpoints ) );
         $usuario_email_registrado == $row_usuario_registrado[ 'usuarios_email' ];
         //Sesión
         $usuario_email_cookie = base64_encode( $usuarios_email );
@@ -86,20 +102,36 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
 </head>
 
 <body>
-<?php
-if ( isset( $herramienta_actual ) ) {
-  if ( $herramienta_actual == 'rally-usuario-principal' ) {
-    include( 'php/rally-usuario-principal.php' );
-  } else if ( $herramienta_actual == 'rally-iniciar-usuario' ) {
-    include( 'php/rally-usuario-principal.php' );
+<div id="id-div-contenedor-general">
+  <?php
+  if ( isset( $herramienta_actual ) ) {
+    if ( $herramienta_actual == 'rally-usuario-principal' ) {
+      include( 'php/rally-usuario-principal.php' );
+    }
+  } else {
+    include( 'php/rally-principal.php' );
   }
-} else {
-  include( 'php/rally-principal.php' );
-}
-?>
+  ?>
+</div>
 </body>
 </html>
 <script>
+$('#html5-qrcode-button-camera-permission').click(function(){
+    $('#id-img-camino').hide();
+    $('#id-img-codigoqr').show();
+    $('#id-span-texto').hide();
+});
+$('#html5-qrcode-button-camera-start').click(function(){
+    $('#id-img-camino').hide();
+    $('#id-img-codigoqr').show();
+    $('#id-span-texto').hide();
+});
+$('#html5-qrcode-button-camera-stop').click(function(){
+    $('#id-img-camino').show();
+    $('#id-img-codigoqr').hide();
+    $('#id-span-texto').show();
+});
+    
 //Cerrar sesión
 $('#id-a-cerrar-sesion').click(function () {
   $.confirm({

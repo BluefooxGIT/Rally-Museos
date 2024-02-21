@@ -87,6 +87,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   outline: none;
   border: none;
   text-align: center;
+  width: 80%;
 }
 .div-modulo-qr {
   border: none !important;
@@ -311,6 +312,8 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 .img-gif-animado {
   width: 210px;
+  display: block;
+  margin: 0px auto;
 }
 .a-boton-inicia {
   font-size: 1.3em;
@@ -364,6 +367,25 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   color: #5D666A;
   text-transform: uppercase;
 }
+.div-contenedor-inicio-full {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+.div-contenido-full {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+}
 .div-contenedor-inicio {
   text-align: center;
   position: absolute;
@@ -391,6 +413,16 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   display: none;
 }
 @media screen and (max-width: 500px) {
+  #id-form-qr {
+    position: relative;
+    top: -12px;
+  }
+  .html5-qrcode-element {
+    width: 100%;
+  }
+  .input-registro-submit {
+    width: 100%;
+  }
   .jconfirm-box {
     width: 90% !important;
   }
@@ -398,7 +430,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     font-size: 1.30em;
   }
   .img-gif-animado {
-    display: block;
     margin: 0px auto;
   }
   .div-checkbox {
@@ -408,28 +439,28 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     width: 100%;
   }
   .div-contenedor-registro {
-    width: 90%;
+    width: 80%;
   }
   .div-contenedor-logueo {
-    width: 90%;
+    width: 80%;
   }
   .div-modulo-qr {
     width: 100% !important;
   }
   .div-contenedor-inicio {
-    width: 90% !important;
+    width: 80% !important;
   }
   .a-boton-inicia {
-    width: 90%;
+    width: 100% !important;
   }
   .a-boton-inicia:last-child {
     margin: 3px 6px;
   }
   .span-titulo {
-    font-size: 7.00em;
+    font-size: 5.00em;
   }
   .span-subtitulo {
-    font-size: 5.00em;
+    font-size: 4.00em;
   }
 }
 /* Skew Forward */
