@@ -121,7 +121,7 @@ if (isset($_POST['rally_herramienta'])) {
 <head>
   <meta http-equiv=”Content-Type” content=”text/html; charset=UTF-8″ />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Bueno Rally Museos Puebla</title>
+  <title>Rally Museos Puebla</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="js/html5-qrcode.min.js"></script>
   <script src="js/jquery-confirm.min.js"></script>
