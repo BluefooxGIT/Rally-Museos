@@ -59,7 +59,7 @@ if ( $checkpoints_usuario_total > '0' ) {
     <span class="span-descripcion-hora">
     <?php if(isset($_GET['l'])) { $checkpoint_lugar = base64_decode($_GET['l']); echo $checkpoint_lugar; } ?>
     </span></span>
-    <input id="id-input-siguiente" class="input-siguiente" type="button" value="siguiente">
+    <input id="id-input-siguiente" class="input-registro-submit" type="button" value="IR AL SIGUIENTE">
   </div>
 </div>
 <div id="id-div-rally" class="div-contenedor-inicio"> <img id="id-img-camino" draggable="false" class="img-gif-animado" src="gif/camino.gif"><img id="id-img-codigoqr" draggable="false" class="div-oculto img-gif-animado" src="gif/codigo-qr.gif"><span id="id-span-texto" class="span-descripcion-punto">Checkpoint<br>
@@ -80,7 +80,6 @@ if ( $checkpoints_usuario_total > '0' ) {
 $('#id-input-siguiente').click(function() {
     location.replace("<?php echo $servidor_dominio; ?>");
 });
-
 //Lector QR
 function onScanSuccess(decodedText, decodedResult) {
   $('#id-input-qr').val(decodedText);
@@ -102,7 +101,6 @@ function onScanSuccess(decodedText, decodedResult) {
     }
   });
 }
-
 function onScanError(errorMessage) {
   //Error
 }

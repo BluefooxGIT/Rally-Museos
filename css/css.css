@@ -259,11 +259,12 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   border-radius: 30px;
   color: #ffffff;
   font-weight: 700;
-  margin: 0px 6px;
+  margin: 6px 6px 0px 6px;
   cursor: pointer;
   display: inline-table;
   outline: none;
   border: none;
+  width: 100%;
 }
 .input-registro-submit:hover {
   background-color: #1f7a7a;

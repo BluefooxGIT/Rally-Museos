@@ -57,6 +57,33 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
         setcookie( "usuario_email", $usuario_email_cookie, time() + 3600 * 24 * 30, '/' );
         setcookie( "usuario_nivel_sesion", $usuario_nivel_sesion_cookie, time() + 3600 * 24 * 30, '/' );
         setcookie( "usuario_sesion", $usuario_sesion_cookie, time() + 3600 * 24 * 30, '/' );
+        //Envío Emial Confirmación
+        require 'PHPMailer/src/Exception.php';
+        require 'PHPMailer/src/PHPMailer.php';
+        require 'PHPMailer/src/SMTP.php';
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->CharSet = 'UTF-8';
+        $mail->setFrom( 'noreplay@bluefoox.com' );
+        $mail->FromName = 'contacto@bluefoox.com';
+        $mail->AddAddress( $usuarios_email );
+        $mail->WordWrap = 50;
+        $mail->IsHTML( true );
+        $subject = "Rally Museos";
+        $subject = "=?UTF-8?B?" . base64_encode( $subject ) . "=?=";
+        $mail->Subject = $subject;
+        $mail->Body = "<head><style>@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');.span-texto{font-weight: 400;display:block;font-size:1.1em;font-family: Ubuntu, sans-serif;}.div-contenedor{padding:12px;}.a-enlace{text-decoration:none;}.span-pie{display:block;font-size:0.96em;}</style></head><body><div class='div-contenedor'><span class='span-texto'>Hola ".$usuarios_nombre.", te haz registrado al Rally de Museos, divi&eacute;rtete capturando los diferentes checkpoints, te esperamos en la meta.</span><br><span class='span-pie'>Rally Museos</span></div></body>";
+        $mail->IsSMTP();
+        $mail->Host = "mail.bluefoox.com";
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+        $mail->Username = "contacto@bluefoox.com";
+        $mail->Password = "fRudRIFuChOph4XLnlprld?tRoc";
+        if ( $mail->Send() )
+          $notificacion = '1';
+        else
+          $notificacion = '0';
       }
     }
   }
@@ -131,7 +158,6 @@ $('#html5-qrcode-button-camera-stop').click(function(){
     $('#id-img-codigoqr').hide();
     $('#id-span-texto').show();
 });
-    
 //Cerrar sesión
 $('#id-a-cerrar-sesion').click(function () {
   $.confirm({
@@ -180,7 +206,6 @@ $('#id-a-cerrar-sesion').click(function () {
     }
   });
 });
-    
 //Registro usuario
 $("#id-form-registro").on("submit", function () {
   event.preventDefault();
