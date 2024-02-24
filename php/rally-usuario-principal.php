@@ -54,24 +54,30 @@ if ( $checkpoints_usuario_total > '0' ) {
     <path d="M483.914,188.117l-82.816-82.752c-12.501-12.495-32.764-12.49-45.259,0.011s-12.49,32.764,0.011,45.259l72.789,72.768   L138.698,224c-17.673,0-32,14.327-32,32s14.327,32,32,32l0,0l291.115-0.533l-73.963,73.963   c-12.042,12.936-11.317,33.184,1.618,45.226c12.295,11.445,31.346,11.436,43.63-0.021l82.752-82.752   c37.491-37.49,37.491-98.274,0.001-135.764c0,0-0.001-0.001-0.001-0.001L483.914,188.117z"/>
   </svg>
   </a> </div>
+<!--Anuncio Checkpoint Registrado-->
 <div id="id-div-checkpoint-leido" class="<?php if(isset($_GET['ch'])) { $checkpoint_leido = base64_decode($_GET['ch']); if($checkpoint_leido == '1') { echo 'div-contenedor-inicio-full'; } else { echo 'div-oculto'; } } else { echo 'div-oculto'; } ?>">
-  <div class="div-contenido-full"><img draggable="false" class="img-gif-animado" src="gif/verificado.gif"><span id="id-span-texto" class="span-descripcion-punto">Ya tienes<br>
+  <div class="div-contenido-full"> <img draggable="false" class="img-gif-animado" src="gif/verificado.gif"> <span id="id-span-texto" class="span-descripcion-punto">Ya tienes<br>
     <span class="span-descripcion-hora">
     <?php if(isset($_GET['l'])) { $checkpoint_lugar = base64_decode($_GET['l']); echo $checkpoint_lugar; } ?>
     </span></span>
     <input id="id-input-siguiente" class="input-registro-submit" type="button" value="IR AL SIGUIENTE">
   </div>
 </div>
-<div id="id-div-rally" class="div-contenedor-inicio"> <img id="id-img-camino" draggable="false" class="img-gif-animado" src="gif/camino.gif"><img id="id-img-codigoqr" draggable="false" class="div-oculto img-gif-animado" src="gif/codigo-qr.gif"><span id="id-span-texto" class="span-descripcion-punto">Checkpoint<br>
+<!--Siguiente Checkpoint-->
+<div id="id-div-rally" class="<?php if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-oculto'; } else { echo 'div-contenedor-checkpoints'; }?>"> <img id="id-img-camino" draggable="false" class="img-gif-animado" src="gif/camino.gif"><img id="id-img-codigoqr" draggable="false" class="div-oculto img-gif-animado" src="gif/codigo-qr.gif"> <span id="id-span-texto" class="span-descripcion-punto">Checkpoint<br>
   Encu&eacute;ntralo en<br>
-  <span class="span-descripcion-hora">
+  </span><span class="span-descripcion-hora">
   <?php if(isset($row_checkpoint)) { echo $row_checkpoint[ 'checkpoint_nombre' ]; } ?>
-  </span> </span>
+  </span> <span class="span-descripcion-direccion">
+  <?php if(isset($row_checkpoint)) { echo $row_checkpoint[ 'checkpoint_direccion' ]; } ?>
+  </span>
+      <a href="<?php if(isset($row_checkpoint)) { echo $row_checkpoint[ 'checkpoint_gmap' ]; } ?>" target="_blank">gmap</a>
   <form id="id-form-qr" method="post" enctype="multipart/form-data" class="">
     <input id="id-input-qr" name="usuarios_checkpoint_checkpoint" type="hidden">
     <div style="width: 100%" id="reader" class="div-modulo-qr"></div>
   </form>
 </div>
+<!--Checkpoint Capturados-->
 <div id="id-div-rally-finalizado" class="<?php if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-contenedor-inicio-full'; } else { echo 'div-oculto'; }?>">
   <div class="div-contenido-full"><img draggable="false" class="img-gif-animado" src="gif/premio.gif"><span class="span-descripcion-punto">Felicidades</span> </div>
 </div>
@@ -107,6 +113,7 @@ function onScanError(errorMessage) {
 var html5QrcodeScanner = new Html5QrcodeScanner("reader", {
   fps: 10,
   qrbox: 250,
+  aspectRatio: 1.333334,
 });
 html5QrcodeScanner.render(onScanSuccess, onScanError);
 </script> 

@@ -72,7 +72,7 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
         $subject = "Rally Museos";
         $subject = "=?UTF-8?B?" . base64_encode( $subject ) . "=?=";
         $mail->Subject = $subject;
-        $mail->Body = "<head><style>@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');.span-texto{font-weight: 400;display:block;font-size:1.1em;font-family: Ubuntu, sans-serif;}.div-contenedor{padding:12px;}.a-enlace{text-decoration:none;}.span-pie{display:block;font-size:0.96em;}</style></head><body><div class='div-contenedor'><span class='span-texto'>Hola ".$usuarios_nombre.", te haz registrado al Rally de Museos, divi&eacute;rtete capturando los diferentes checkpoints, te esperamos en la meta.</span><br><span class='span-pie'>Rally Museos</span></div></body>";
+        $mail->Body = "<head><style>@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');.span-texto{font-weight: 400;display:block;font-size:1.1em;font-family: Ubuntu, sans-serif;}.div-contenedor{padding:12px;}.a-enlace{text-decoration:none;}.span-pie{display:block;font-size:0.96em;}</style></head><body><div class='div-contenedor'><span class='span-texto'>Hola " . $usuarios_nombre . ", te haz registrado al Rally de Museos, divi&eacute;rtete capturando los diferentes checkpoints, te esperamos en la meta.</span><br><span class='span-pie'>Rally Museos</span></div></body>";
         $mail->IsSMTP();
         $mail->Host = "mail.bluefoox.com";
         $mail->SMTPAuth = true;
@@ -123,7 +123,9 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
 <title>Rally Museos Puebla</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
 <script src="js/html5-qrcode.min.js"></script> 
-<script src="js/jquery-confirm.min.js"></script>
+<script src="js/jquery-confirm.min.js"></script> 
+<script src="js/jquery.gScrollingCarousel.js"></script> 
+<link href="css/jquery.gScrollingCarousel.css" rel="stylesheet" />
 <link href="css/css.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/jquery-confirm.min.css">
 </head>
@@ -300,18 +302,18 @@ $("#id-form-logueo").on("submit", function () {
 });
 
 $('#id-a-registro').click(function () {
-  $('#id-div-inicio').fadeOut(300);
-  $('#id-div-registro').fadeIn(300);
+  $('#id-div-inicio').hide(0);
+  $('#id-div-registro').show(0);
 })
 
 $('#id-a-iniciar').click(function () {
-  $('#id-div-inicio').fadeOut(300);
-  $('#id-div-logueo').fadeIn(300);
+  $('#id-div-inicio').hide(0);
+  $('#id-div-logueo').show(0);
 })
     
 $('.input-registro-volver').click(function () {
-  $('#id-div-inicio').fadeIn(300);
-  $('#id-div-logueo').fadeOut(300);
-  $('#id-div-registro').fadeOut(300);
+  $('#id-div-inicio').show(0);
+  $('#id-div-logueo').hide(0);
+  $('#id-div-registro').hide(0);
 })
 </script>
