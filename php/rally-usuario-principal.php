@@ -40,13 +40,45 @@ if ( $checkpoints_usuario_total > '0' ) {
         $row_checkpoint_filtro = mysqli_fetch_array( $sql_checkpoint_filtro );
         $usuarios_checkpoint_registrado = $row_checkpoint_filtro[ 'usuarios_checkpoint_registrado' ];
         if ( $usuarios_checkpoint_registrado == '0' ) {
-          mysqli_query( $mysqli, "UPDATE rally_usuarios_checkpoint SET usuarios_checkpoint_registrado = '1' WHERE usuarios_checkpoint_usuario = '$usuarios_checkpoint_usuario' AND usuarios_checkpoint_checkpoint = '$usuarios_checkpoint_checkpoint'" );
+          $usuarios_checkpoint_fecha = date( "Y-m-d" );
+          $usuarios_checkpoint_hora = date( "H:i:s" );
+          mysqli_query( $mysqli, "UPDATE rally_usuarios_checkpoint SET usuarios_checkpoint_registrado = '1', usuarios_checkpoint_fecha = '$usuarios_checkpoint_fecha', usuarios_checkpoint_hora = '$usuarios_checkpoint_hora' WHERE usuarios_checkpoint_usuario = '$usuarios_checkpoint_usuario' AND usuarios_checkpoint_checkpoint = '$usuarios_checkpoint_checkpoint'" );
         }
       }
     }
   }
 }
+//Enviar Email Checkpoints Completos
+if ( $checkpoints_total == $checkpoints_usuario_total_activados ) {
+  require 'PHPMailer/src/Exception.php';
+  require 'PHPMailer/src/PHPMailer.php';
+  require 'PHPMailer/src/SMTP.php';
+  $mail = new PHPMailer\PHPMailer\PHPMailer();
+  $mail->SMTPDebug = 0;
+  $mail->CharSet = 'UTF-8';
+  $mail->setFrom( 'noreplay@bluefoox.com' );
+  $mail->FromName = 'contacto@bluefoox.com';
+  $mail->AddAddress( $usuarios_email );
+  $mail->WordWrap = 50;
+  $mail->IsHTML( true );
+  $subject = "Rally Museos Felicidades haz completado el Rally Museos";
+  $subject = "=?UTF-8?B?" . base64_encode( $subject ) . "=?=";
+  $mail->Subject = $subject;
+  $mail->Body = "<head><style>@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');.span-texto{font-weight: 400;display:block;font-size:1.1em;font-family: Ubuntu, sans-serif;}.div-contenedor{padding:12px;}.a-enlace{text-decoration:none;}.span-pie{display:block;font-size:0.96em;}</style></head><body><div class='div-contenedor'><span class='span-texto'>Hola " . $usuarios_nombre . ", te haz registrado al Rally de Museos, divi&eacute;rtete capturando los diferentes checkpoints, te esperamos en la meta.</span><br><span class='span-pie'>Rally Museos</span></div></body>";
+  $mail->IsSMTP();
+  $mail->Host = "mail.bluefoox.com";
+  $mail->SMTPAuth = true;
+  $mail->SMTPSecure = 'tls';
+  $mail->Port = 587;
+  $mail->Username = "contacto@bluefoox.com";
+  $mail->Password = "fRudRIFuChOph4XLnlprld?tRoc";
+  if ( $mail->Send() )
+    $notificacion = '1';
+  else
+    $notificacion = '0';
+}
 ?>
+<div class="div-cabezal-imagen-2" style="background-image: url('<?php $a = array('jpg/cabezal-02.jpg','jpg/cabezal-03.jpg'); echo $a[array_rand($a)];?>')">&nbsp;</div>
 <!--Botón cerrar sesión-->
 <div class="div-cerrar-sesion"> <a id="id-a-cerrar-sesion" class="a-cerrar-sesion">
   <svg class="svg-cerrar-sesion" viewBox="0 0 512 512">
@@ -55,33 +87,71 @@ if ( $checkpoints_usuario_total > '0' ) {
   </svg>
   </a> </div>
 <!--Anuncio Checkpoint Registrado-->
-<div id="id-div-checkpoint-leido" class="<?php if(isset($_GET['ch'])) { $checkpoint_leido = base64_decode($_GET['ch']); if($checkpoint_leido == '1') { echo 'div-contenedor-inicio-full'; } else { echo 'div-oculto'; } } else { echo 'div-oculto'; } ?>">
-  <div class="div-contenido-full"> <img draggable="false" class="img-gif-animado" src="gif/verificado.gif"> <span id="id-span-texto" class="span-descripcion-punto">Ya tienes<br>
-    <span class="span-descripcion-hora">
+<div id="id-div-checkpoint-leido" class="<?php if(isset($_GET['ch'])) { $checkpoint_leido = base64_decode($_GET['ch']); if($checkpoint_leido == '1') { echo 'div-contenedor-checkpoints'; } else { echo 'div-oculto'; } } else { echo 'div-oculto'; } ?>">
+  <div class=""> <img draggable="false" class="img-gif-animado" src="gif/verificado.gif"> <span id="id-span-texto" class="span-descripcion-punto">¡Excelente ya tienes!<br>
+    </span> <span class="span-descripcion-hora">
     <?php if(isset($_GET['l'])) { $checkpoint_lugar = base64_decode($_GET['l']); echo $checkpoint_lugar; } ?>
-    </span></span>
-    <input id="id-input-siguiente" class="input-registro-submit" type="button" value="IR AL SIGUIENTE">
+    </span><br>
+    <input id="id-input-siguiente" class="input-registro-submit" type="button" value="Siguiente Checkpoint">
   </div>
+  <div class="div-contenedor-inicio-d">&nbsp;</div>
 </div>
 <!--Siguiente Checkpoint-->
-<div id="id-div-rally" class="<?php if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-oculto'; } else { echo 'div-contenedor-checkpoints'; }?>"> <img id="id-img-camino" draggable="false" class="img-gif-animado" src="gif/camino.gif"><img id="id-img-codigoqr" draggable="false" class="div-oculto img-gif-animado" src="gif/codigo-qr.gif"> <span id="id-span-texto" class="span-descripcion-punto">Checkpoint<br>
-  Encu&eacute;ntralo en<br>
-  </span><span class="span-descripcion-hora">
-  <?php if(isset($row_checkpoint)) { echo $row_checkpoint[ 'checkpoint_nombre' ]; } ?>
-  </span> <span class="span-descripcion-direccion">
-  <?php if(isset($row_checkpoint)) { echo $row_checkpoint[ 'checkpoint_direccion' ]; } ?>
-  </span>
-      <a href="<?php if(isset($row_checkpoint)) { echo $row_checkpoint[ 'checkpoint_gmap' ]; } ?>" target="_blank">gmap</a>
+<div id="id-div-rally" class="<?php if(isset($_GET['ch'])) { $checkpoint_leido = base64_decode($_GET['ch']); if($checkpoint_leido == '1') { echo 'div-oculto'; } else { if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-oculto'; } else { echo 'div-contenedor-checkpoints'; } } } else { if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-oculto'; } else { echo 'div-contenedor-checkpoints'; } } ?>"> <img id="id-img-camino" draggable="false" class="img-gif-animado" src="gif/camino.gif"><img id="id-img-codigoqr" draggable="false" class="div-oculto img-gif-animado" src="gif/codigo-qr.gif">
+  <div id="id-div-contenedor-checkpoint"><span id="id-span-texto" class="span-descripcion-punto">Checkpoint encu&eacute;ntralo en:</span><span class="span-descripcion-hora">
+    <?php if(isset($row_checkpoint)) { echo $row_checkpoint[ 'checkpoint_nombre' ]; } ?>
+    </span> <span class="span-descripcion-direccion">
+    <?php if(isset($row_checkpoint)) { echo 'Direcci&oacute;n: '.$row_checkpoint[ 'checkpoint_direccion' ]; } ?>
+    </span>
+    <iframe id="id-frame-gmap" class="iframe-gmaps" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.483211093123!2d-98.2015712258168!3d19.042480853025957!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cfc0e7f040bb81%3A0x26f40cbe4118a8ad!2sGaleria%20Tesoros%20de%20la%20Catedral!5e0!3m2!1ses-419!2smx!4v1708808608486!5m2!1ses-419!2smx" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
   <form id="id-form-qr" method="post" enctype="multipart/form-data" class="">
     <input id="id-input-qr" name="usuarios_checkpoint_checkpoint" type="hidden">
     <div style="width: 100%" id="reader" class="div-modulo-qr"></div>
   </form>
+  <input id="id-input-regresar" class="input-registro-volver div-oculto" type="submit" value="Regresar">
+  <div class="div-contenedor-inicio-c"> <span class="span-subtitulo-a">Activar C&aacute;mara y <br>
+    Escanear C&oacute;digo</span><br>
+    <br>
+    <div class="div-participar-pasos">
+      <div class="div-pasos">Paso 1</div>
+      <div class="div-pasos-descripcion">Presiona el bot&oacute;n <b>"Activar C&aacute;mara y Escanear C&oacute;digo"</b>.</div>
+    </div>
+    <div class="div-participar-pasos">
+      <div class="div-pasos">Paso 2</div>
+      <div class="div-pasos-descripcion"><b>Permite</b> al navegador acceder a la c&aacute;mara.</div>
+    </div>
+    <div class="div-participar-pasos">
+      <div class="div-pasos">Paso 3</div>
+      <div class="div-pasos-descripcion">Selecciona la cámara, te recomendamos <b>"C&aacute;mara Tracera"</b> y escan&eacute;a tu <i>checkpoint</i>.</div>
+    </div>
+  </div>
+  <div class="div-contenedor-inicio-d">&nbsp;</div>
 </div>
 <!--Checkpoint Capturados-->
-<div id="id-div-rally-finalizado" class="<?php if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-contenedor-inicio-full'; } else { echo 'div-oculto'; }?>">
-  <div class="div-contenido-full"><img draggable="false" class="img-gif-animado" src="gif/premio.gif"><span class="span-descripcion-punto">Felicidades</span> </div>
+<div id="id-div-rally-finalizado" class="<?php if(isset($_GET['ch'])) { $checkpoint_leido = base64_decode($_GET['ch']); if($checkpoint_leido == '1') { echo 'div-oculto'; } else { if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-contenedor-checkpoints'; } else { echo 'div-oculto'; } } } else { if($checkpoints_total == $checkpoints_usuario_total_activados) { echo 'div-contenedor-checkpoints'; } else { echo 'div-oculto'; } } ?>"> <img draggable="false" class="img-gif-animado" src="gif/premio.gif"><span class="span-subtitulo">Felicidades</span><br>
+  <span class="span-descripcion-punto">Haz recorrido todos los checkpoints, ahora puedes ir por tu premio al:</span><br>
+  <span class="span-descripcion-hora"> Museo Internacional del Barroco </span><span class="span-descripcion-direccion">Direcci&oacute;n: Bulevar Atlixcáyotl 2501. Reserva Territorial Atlixcáyotl.</span>
+  <div class="div-contenedor-inicio-b">
+    <div class="div-contenedor-inicio-c"> <span class="span-subtitulo">Museos Participantes</span>
+      <div class="g-scrolling-carousel carousel">
+        <div class="items"><a href="#" style="background-image: url('jpg/slider-01.jpg')">&nbsp;</a><a href="#" style="background-image: url('jpg/slider-02.jpg')">&nbsp;</a><a href="#" style="background-image: url('jpg/slider-03.jpg')">&nbsp;</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="div-contenedor-inicio-d">&nbsp;</div>
 </div>
 <script>
+//Slider Museos
+$(document).ready(function(){
+    $(".g-scrolling-carousel .items").gScrollingCarousel({
+        mouseScrolling: true,
+        scrollAmount: 'viewport',
+        draggable: true,
+        snapOnDrag: true,
+        mobileNative: false,
+    });
+});
 //Botón Siguiente Checkpoint
 $('#id-input-siguiente').click(function() {
     location.replace("<?php echo $servidor_dominio; ?>");

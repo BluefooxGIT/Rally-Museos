@@ -38,15 +38,13 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
         do {
           $usuarios_checkpoint_usuario = $usuarios_folio;
           $usuarios_checkpoint_checkpoint = $row_checkpoints[ 'checkpoint_folio' ];
-          $usuarios_checkpoint_fecha = date( "Y-m-d" );
-          $usuarios_checkpoint_hora = date( "H:i:s" );
           $usuarios_checkpoint_registrado = '0';
           //Filtro Duplicados
           $sql_checkpoints_filtro = $mysqli->query( "SELECT * FROM rally_usuarios_checkpoint WHERE usuarios_checkpoint_usuario = '$usuarios_folio' AND usuarios_checkpoint_checkpoint = '$usuarios_checkpoint_checkpoint' " );
           $row_checkpoints_filtro = mysqli_fetch_array( $sql_checkpoints_filtro );
           if ( !isset( $row_checkpoints_filtro ) ) {
             //Registrar Checkpoints
-            mysqli_query( $mysqli, "INSERT INTO rally_usuarios_checkpoint (usuarios_checkpoint_usuario, usuarios_checkpoint_checkpoint, usuarios_checkpoint_fecha, usuarios_checkpoint_hora, usuarios_checkpoint_registrado) VALUES ('$usuarios_checkpoint_usuario', '$usuarios_checkpoint_checkpoint', '$usuarios_checkpoint_fecha', '$usuarios_checkpoint_hora', '$usuarios_checkpoint_registrado')" );
+            mysqli_query( $mysqli, "INSERT INTO rally_usuarios_checkpoint (usuarios_checkpoint_usuario, usuarios_checkpoint_checkpoint, usuarios_checkpoint_registrado) VALUES ('$usuarios_checkpoint_usuario', '$usuarios_checkpoint_checkpoint', '$usuarios_checkpoint_registrado')" );
           }
         } while ( $row_checkpoints = mysqli_fetch_assoc( $sql_checkpoints ) );
         $usuario_email_registrado == $row_usuario_registrado[ 'usuarios_email' ];
@@ -72,7 +70,8 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
         $subject = "Rally Museos";
         $subject = "=?UTF-8?B?" . base64_encode( $subject ) . "=?=";
         $mail->Subject = $subject;
-        $mail->Body = "<head><style>@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');.span-texto{font-weight: 400;display:block;font-size:1.1em;font-family: Ubuntu, sans-serif;}.div-contenedor{padding:12px;}.a-enlace{text-decoration:none;}.span-pie{display:block;font-size:0.96em;}</style></head><body><div class='div-contenedor'><span class='span-texto'>Hola " . $usuarios_nombre . ", te haz registrado al Rally de Museos, divi&eacute;rtete capturando los diferentes checkpoints, te esperamos en la meta.</span><br><span class='span-pie'>Rally Museos</span></div></body>";
+        $mail->AddEmbeddedImage('jpg/img-email-01.jpg', 'cabezal_01');
+        $mail->Body = "<head><style>@charset 'utf-8';@import url(https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap);body{background-color:#c9c9c9}*{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}.span-texto{font-weight:400;display:block;font-size:1.1em;font-family:Lato,sans-serif}.img-cabezal{width:100%;height:auto}.div-contenedor{padding:0;width:700px;margin:0 auto;background-color:#fff}.div-subcontenedor{padding:12px;width:700px;margin:0 auto;background-color:#fff}.a-enlace{text-decoration:none}.span-pie{display:block;font-size:.96em}</style></head><body><div class='div-contenedor'><img alt='' class='img-cabezal' src='cid:cabezal_01'><div class='div-subcontenedor'><span class='span-texto'>Hola " . $usuarios_nombre . ", te haz registrado al Rally de Museos, divi&eacute;rtete capturando los diferentes checkpoints, te esperamos en la meta.</span></div></div></body>";
         $mail->IsSMTP();
         $mail->Host = "mail.bluefoox.com";
         $mail->SMTPAuth = true;
@@ -124,7 +123,7 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
 <script src="js/html5-qrcode.min.js"></script> 
 <script src="js/jquery-confirm.min.js"></script> 
-<script src="js/jquery.gScrollingCarousel.js"></script> 
+<script src="js/jquery.gScrollingCarousel.js"></script>
 <link href="css/jquery.gScrollingCarousel.css" rel="stylesheet" />
 <link href="css/css.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/jquery-confirm.min.css">
@@ -145,21 +144,12 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
 </body>
 </html>
 <script>
-$('#html5-qrcode-button-camera-permission').click(function(){
-    $('#id-img-camino').hide();
-    $('#id-img-codigoqr').show();
-    $('#id-span-texto').hide();
+$(document).ready(function() {
+    $("#id-input-regresar").click(function() {
+        location.replace("<?php echo $servidor_dominio; ?>");
+    });
 });
-$('#html5-qrcode-button-camera-start').click(function(){
-    $('#id-img-camino').hide();
-    $('#id-img-codigoqr').show();
-    $('#id-span-texto').hide();
-});
-$('#html5-qrcode-button-camera-stop').click(function(){
-    $('#id-img-camino').show();
-    $('#id-img-codigoqr').hide();
-    $('#id-span-texto').show();
-});
+    
 //Cerrar sesión
 $('#id-a-cerrar-sesion').click(function () {
   $.confirm({
