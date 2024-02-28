@@ -137,7 +137,7 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
 </head>
 
 <body>
-<div id="id-div-contenedor-general">
+<div id="id-div-contenedor-general" class="div-conenedor-general-movil">
   <?php
   if ( isset( $herramienta_actual ) ) {
     if ( $herramienta_actual == 'rally-usuario-principal' ) {

@@ -60,6 +60,9 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 #reader__scan_region br {
   display: none !important;
 }
+.div-conenedor-general-movil {
+  display: none;
+}
 .div-cabezal-imagen {
   width: 100%;
   height: 300px;
@@ -497,6 +500,9 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
   display: none;
 }
 @media screen and (max-width: 500px) {
+  .div-conenedor-general-movil {
+    display: block;
+  }
   body {
     background-color: #000000;
   }
