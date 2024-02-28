@@ -38,9 +38,8 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
         do {
           $usuarios_checkpoint_usuario = $usuarios_folio;
           $usuarios_checkpoint_checkpoint = $row_checkpoints[ 'checkpoint_folio' ];
-          $usuarios_checkpoint_checkpoint = $row_checkpoints[ 'checkpoint_folio' ];
-          $usuarios_checkpoint_fecha = date( "Y-m-d" );
-          $usuarios_checkpoint_hora = date( "H:i:s" );
+          //$usuarios_checkpoint_fecha = date( "Y-m-d" );
+          //$usuarios_checkpoint_hora = date( "H:i:s" );
           $usuarios_checkpoint_registrado = '0';
           //Filtro Duplicados
           $sql_checkpoints_filtro = $mysqli->query( "SELECT * FROM rally_usuarios_checkpoint WHERE usuarios_checkpoint_usuario = '$usuarios_folio' AND usuarios_checkpoint_checkpoint = '$usuarios_checkpoint_checkpoint' " );
@@ -48,7 +47,6 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
           if ( !isset( $row_checkpoints_filtro ) ) {
             //Registrar Checkpoints
             mysqli_query( $mysqli, "INSERT INTO rally_usuarios_checkpoint (usuarios_checkpoint_usuario, usuarios_checkpoint_checkpoint, usuarios_checkpoint_registrado) VALUES ('$usuarios_checkpoint_usuario', '$usuarios_checkpoint_checkpoint', '$usuarios_checkpoint_registrado')" );
-            mysqli_query( $mysqli, "INSERT INTO rally_usuarios_checkpoint (usuarios_checkpoint_usuario, usuarios_checkpoint_checkpoint, usuarios_checkpoint_fecha, usuarios_checkpoint_hora, usuarios_checkpoint_registrado) VALUES ('$usuarios_checkpoint_usuario', '$usuarios_checkpoint_checkpoint', '$usuarios_checkpoint_fecha', '$usuarios_checkpoint_hora', '$usuarios_checkpoint_registrado')" );
           }
         } while ( $row_checkpoints = mysqli_fetch_assoc( $sql_checkpoints ) );
         $usuario_email_registrado == $row_usuario_registrado[ 'usuarios_email' ];
@@ -75,7 +73,12 @@ if ( isset( $_POST[ 'rally_herramienta' ] ) ) {
         $subject = "=?UTF-8?B?" . base64_encode( $subject ) . "=?=";
         $mail->Subject = $subject;
         $mail->AddEmbeddedImage( 'jpg/img-email-01.jpg', 'cabezal_01' );
-        $mail->Body = "<head><style>@charset 'utf-8';@import url(https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap);body{background-color:#c9c9c9}*{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}.span-texto{font-weight:400;display:block;font-size:1.1em;font-family:Lato,sans-serif}.img-cabezal{width:100%;height:auto}.div-contenedor{padding:0;width:700px;margin:0 auto;background-color:#fff}.div-subcontenedor{padding:12px;width:700px;margin:0 auto;background-color:#fff}.a-enlace{text-decoration:none}.span-pie{display:block;font-size:.96em}</style></head><body><div class='div-contenedor'><img alt='' class='img-cabezal' src='cid:cabezal_01'><div class='div-subcontenedor'><span class='span-texto'>Hola " . $usuarios_nombre . ", te haz registrado al Rally de Museos, divi&eacute;rtete capturando los diferentes checkpoints, te esperamos en la meta.</span></div></div></body>";
+        $mail->AddEmbeddedImage( 'png/facebook.png', 'facebook' );
+        $mail->AddEmbeddedImage( 'png/instagram.png', 'instagram' );
+        $mail->AddEmbeddedImage( 'png/tik-tok.png', 'tik-tok' );
+        $mail->AddEmbeddedImage( 'png/twitter.png', 'twitter' );
+        $mail->AddEmbeddedImage( 'png/youtube.png', 'youtube' );
+        $mail->Body = '<head><style>@charset "utf-8";@import url(https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap);*{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;font-family:Lato,sans-serif}.span-texto{font-weight:400;display:block;font-size:1.7em;color:#5d666a;line-height:1.3em}.img-cabezal{width:100%;height:auto;border-radius:12px}.div-contenedor{font-family: "Lato", sans-serif;padding:0;width:700px;margin:0 auto;background-color:#fff;text-align:center}.div-subcontenedor{font-family: "Lato", sans-serif;padding:12px;width:700px;margin:0 auto;background-color:#fff}.div-subcontenedor-redes{font-family: "Lato", sans-serif;padding:24px 21px;width:700px;margin:0 auto;background-color:#5b69bf;border-radius:12px}.span-redes{color:#fff;font-weight:400;font-size:1.3em}.a-enlace{text-decoration:none;font-weight:900;color:#5b69bf}.span-pie{display:block;font-size:.9em;color:#5d666a;padding:36px 0 12px 0}.span-rally{font-weight:900}.div-cabezal{font-size:2em;width:100%;text-align:center;color:#5d666a;font-weight:900;margin:12px 0 24px 0}.img-redes{margin:18px 12px 0 12px}</style></head><body><div class="div-contenedor"><div class="div-cabezal"></div><img alt="" class="img-cabezal" src="cid:cabezal_01"><div class="div-subcontenedor"><span class="span-texto">Hola ' . $usuarios_nombre . ', te haz registrado correctamente al <span class="span-rally">Rally de Museos</span>.</span><br><span class="span-texto">Ahora podr&aacute;s accesar a la plataforma a trav&eacute;s de tu tel&eacute;fono haciendo clic <a class="a-enlace" href="https://bluefoox.com/rallymuseos/">aqu&iacute;</a>.</span><br><span class="span-texto">Divi&eacute;rtete capturando todos los <i>checkponits</i>, te esperamos en la meta, mucha suerte.</span><br><div class="div-subcontenedor-redes"><span class="span-redes">S&iacute;guenos en nuestras redes sociales y comparte con todos tu experiencia.</span><br><a class="a-enlace" href="#"><img alt="Facebook" class="img-redes" src="cid:facebook"></a><a class="a-enlace" href="#"><img alt="Instagram" class="img-redes" src="cid:instagram"></a><a class="a-enlace" href="#"><img alt="Tik-Tok" class="img-redes" src="cid:tik-tok"></a><a class="a-enlace" href="#"><img alt="Twitter" class="img-redes" src="cid:twitter"></a><a class="a-enlace" href="#"><img alt="YouTube" class="img-redes" src="cid:youtube"></a></div><span class="span-pie">Recibiste este correo electr&oacute;nico para notificar tu registro, si tienes alguna duda o comentario podr&aacute;s contactarte con nosotros en cualquier momento a trav&eacute;s de nuestro correo electr&oacute;nico correo@dominio.com o a nuestros tel&eacute;fonos de contacto 0000 000 000.</span></div></div></body>';
         $mail->IsSMTP();
         $mail->Host = "mail.bluefoox.com";
         $mail->SMTPAuth = true;

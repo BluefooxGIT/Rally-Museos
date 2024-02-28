@@ -6,4 +6,6 @@
 <file name="Exception.php" server="65.99.205.174//public_html/rallymuseos/" local="133481030741402976" remote="133529690400000000" Dst="0" />
 <file name="PHPMailer.php" server="65.99.205.174//public_html/rallymuseos/" local="133481030738129643" remote="133529690400000000" Dst="0" />
 <file name="SMTP.php" server="65.99.205.174//public_html/rallymuseos/" local="133481030730848012" remote="133529690400000000" Dst="0" />
+<file name="OAuth.php" server="65.99.205.174//public_html/rallymuseos/" local="133481030739833950" remote="133535525400000000" Dst="0" />
+<file name="POP3.php" server="65.99.205.174//public_html/rallymuseos/" local="133481030732437878" remote="133535525400000000" Dst="0" />
 </dwsync>
